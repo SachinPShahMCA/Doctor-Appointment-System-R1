@@ -23,6 +23,8 @@ var host = Host.CreateDefaultBuilder(args)
         {
             x.AddConsumer<EmailNotificationConsumer>();
             x.AddConsumer<AppointmentCancelledConsumer>();
+            x.AddConsumer<SmsNotificationConsumer>();
+            x.AddConsumer<SmsCancellationConsumer>();
 
             x.UsingRabbitMq((mctx, rcfg) =>
             {
