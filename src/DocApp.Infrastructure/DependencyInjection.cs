@@ -3,6 +3,7 @@ using DocApp.Infrastructure.Messaging;
 using DocApp.Infrastructure.Persistence;
 using DocApp.Infrastructure.Services;
 using DocApp.Infrastructure.Time;
+using Microsoft.Extensions.Logging;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,25 +39,42 @@ public static class DependencyInjection
         // Timezone
         services.AddSingleton<IDateTimeZoneService, DateTimeZoneService>();
 
-        // Redis
-        services.AddStackExchangeRedisCache(options =>
-            options.Configuration = configuration.GetConnectionString("Redis"));
-
-        // MassTransit + RabbitMQ
-        services.AddMassTransit(x =>
+        // Redis — optional in dev (gracefully skipped if not configured)
+        var redisConn = configuration.GetConnectionString("Redis");
+        if (!string.IsNullOrEmpty(redisConn))
         {
-            x.SetKebabCaseEndpointNameFormatter();
-            x.UsingRabbitMq((ctx, cfg) =>
+            services.AddStackExchangeRedisCache(opts => opts.Configuration = redisConn);
+        }
+        else
+        {
+            // Fall back to in-memory cache so tenant resolution still works
+            services.AddDistributedMemoryCache();
+        }
+
+        // MassTransit + RabbitMQ — optional in dev
+        var rabbitHost = configuration["RabbitMq:Host"];
+        if (!string.IsNullOrEmpty(rabbitHost))
+        {
+            services.AddMassTransit(x =>
             {
-                var rabbit = configuration.GetSection("RabbitMq");
-                cfg.Host(rabbit["Host"], rabbit["VirtualHost"] ?? "/", h =>
+                x.SetKebabCaseEndpointNameFormatter();
+                x.UsingRabbitMq((ctx, cfg) =>
                 {
-                    h.Username(rabbit["Username"] ?? "guest");
-                    h.Password(rabbit["Password"] ?? "guest");
+                    var rabbit = configuration.GetSection("RabbitMq");
+                    cfg.Host(rabbit["Host"], rabbit["VirtualHost"] ?? "/", h =>
+                    {
+                        h.Username(rabbit["Username"] ?? "guest");
+                        h.Password(rabbit["Password"] ?? "guest");
+                    });
+                    cfg.ConfigureEndpoints(ctx);
                 });
-                cfg.ConfigureEndpoints(ctx);
             });
-        });
+        }
+        else
+        {
+            // No-op bus for dev — commands still work, events just not published
+            services.AddMassTransit(x => x.UsingInMemory());
+        }
 
         services.AddScoped<EventBusPublisher>();
 

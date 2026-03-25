@@ -1,6 +1,7 @@
 using DocApp.Application;
 using DocApp.Infrastructure;
 using DocApp.Api.Middlewares;
+using DocApp.Api.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -116,5 +117,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
+
+// ─── Auto-migrate + seed on startup (dev-friendly) ───────────────────────────
+try
+{
+    await DatabaseSeeder.SeedAsync(app.Services, app.Logger);
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Error during DB migration/seeding. Ensure PostgreSQL is running.");
+}
 
 app.Run();
