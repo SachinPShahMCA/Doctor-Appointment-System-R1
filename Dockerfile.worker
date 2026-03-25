@@ -1,0 +1,21 @@
+# Multi-stage Dockerfile for DocApp.NotificationWorker
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY src/DocApp.Domain/DocApp.Domain.csproj DocApp.Domain/
+COPY src/DocApp.Application/DocApp.Application.csproj DocApp.Application/
+COPY src/DocApp.Infrastructure/DocApp.Infrastructure.csproj DocApp.Infrastructure/
+COPY src/DocApp.NotificationWorker/DocApp.NotificationWorker.csproj DocApp.NotificationWorker/
+RUN dotnet restore DocApp.NotificationWorker/DocApp.NotificationWorker.csproj
+
+COPY src/ .
+RUN dotnet publish DocApp.NotificationWorker/DocApp.NotificationWorker.csproj -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+WORKDIR /app
+
+RUN adduser --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "DocApp.NotificationWorker.dll"]

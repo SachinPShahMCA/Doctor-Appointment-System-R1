@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; margin:0; padding:0; }
+    .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #4F46E5, #7C3AED); padding: 40px 30px; color: #fff; text-align: center; }
+    .header h1 { margin: 0; font-size: 24px; }
+    .body { padding: 32px 40px; color: #374151; }
+    .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E5E7EB; }
+    .footer { text-align: center; padding: 20px; font-size: 12px; color: #9CA3AF; background: #F9FAFB; }
+    .badge { display: inline-block; background: #D1FAE5; color: #065F46; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>✅ Appointment Confirmed</h1>
+      <p style="margin:8px 0 0;opacity:.85;">Your booking is confirmed.</p>
+    </div>
+    <div class="body">
+      <p>Hi <strong>{{ patient_name }}</strong>,</p>
+      <p>Your appointment has been successfully booked.</p>
+
+      <div class="detail-row"><span>Doctor</span><span><strong>Dr. {{ doctor_name }}</strong></span></div>
+      <div class="detail-row"><span>Date &amp; Time</span><span><strong>{{ start_time }}</strong></span></div>
+      <div class="detail-row"><span>Timezone</span><span>{{ timezone }}</span></div>
+
+      <p style="margin-top:24px;">Please arrive 10 minutes early. To cancel or reschedule, log into your patient portal.</p>
+      <span class="badge">Appointment Confirmed</span>
+    </div>
+    <div class="footer">
+      Sent by DocApp &bull; {{ tenant_id }} &bull; Unsubscribe
+    </div>
+  </div>
+</body>
+</html>
