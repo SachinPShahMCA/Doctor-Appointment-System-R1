@@ -158,8 +158,8 @@
 ### Phase 8 — Testing
 | # | Task | Status | Agent/Date | Notes |
 |---|------|--------|------------|-------|
-| 8.1 | Unit tests for Domain entities | ⏳ | — | xUnit |
-| 8.2 | Unit tests for Application handlers | ⏳ | — | Moq mocks for IApplicationDbContext |
+| 8.1 | Unit tests for Domain entities | ✅ | Antigravity · 2026-03-25 | xUnit |
+| 8.2 | Unit tests for Application handlers | ✅ | Antigravity · 2026-03-25 | Moq mocks for IApplicationDbContext |
 | 8.3 | Integration tests for API endpoints | ⏳ | — | `WebApplicationFactory<Program>` |
 | 8.4 | E2E tests (Playwright or Cypress) | ⏳ | — | Booking flow, cancellation |
 
