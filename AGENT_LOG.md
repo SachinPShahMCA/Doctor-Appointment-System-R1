@@ -119,25 +119,25 @@
 | 5.1 | `Program.cs` — register all services | ⏳ | — | DI registration for all modules |
 | 5.2 | `TenantMiddleware` | ⏳ | — | Extract `X-Tenant-ID` header or subdomain |
 | 5.3 | Global exception handling middleware | ⏳ | — | Map domain exceptions → HTTP status codes |
-| 5.4 | `AppointmentsController` | ⏳ | — | POST /book, DELETE /{id}/cancel, GET /slots |
-| 5.5 | `DoctorsController` | ⏳ | — | CRUD for doctors (admin) |
-| 5.6 | `PatientsController` | ⏳ | — | CRUD for patients |
-| 5.7 | JWT authentication setup | ⏳ | — | ASP.NET Core Identity + JWT bearer |
-| 5.8 | Role-based authorization (Admin, Doctor, Patient) | ⏳ | — | `[Authorize(Roles = "...")]` guards |
-| 5.9 | Swagger / OpenAPI with auth support | ⏳ | — | `SwaggerUI` with JWT bearer header |
-| 5.10 | Serilog structured logging | ⏳ | — | Console + File sinks; correlation IDs |
-| 5.11 | `appsettings.json` + `appsettings.Development.json` | ⏳ | — | ConnectionStrings, JWT, SMTP, Twilio |
+| 5.4 | `AppointmentsController` | ✅ | Antigravity · 2026-03-25 | POST /book, DELETE /{id}/cancel, GET /slots |
+| 5.5 | `DoctorsController` | ✅ | Antigravity · 2026-03-25 | CRUD for doctors (admin) |
+| 5.6 | `PatientsController` | ✅ | Antigravity · 2026-03-25 | CRUD for patients |
+| 5.7 | JWT authentication setup | ✅ | Antigravity · 2026-03-25 | ASP.NET Core Identity + JWT bearer |
+| 5.8 | Role-based authorization (Admin, Doctor, Patient) | ✅ | Antigravity · 2026-03-25 | `[Authorize(Roles = "...")]` guards |
+| 5.9 | Swagger / OpenAPI with auth support | ✅ | Antigravity · 2026-03-25 | `SwaggerUI` with JWT bearer header |
+| 5.10 | Serilog structured logging | ✅ | Antigravity · 2026-03-25 | Console + File sinks; correlation IDs |
+| 5.11 | `appsettings.json` + `appsettings.Development.json` | ✅ | Antigravity · 2026-03-25 | ConnectionStrings, JWT, SMTP, Twilio |
 
 ---
 
 ### Phase 6 — Notification Worker (`DocApp.NotificationWorker`)
 | # | Task | Status | Agent/Date | Notes |
 |---|------|--------|------------|-------|
-| 6.1 | `EmailNotificationConsumer` (MassTransit IConsumer) | ⏳ | — | Consumes `AppointmentBookedIntegrationEvent` |
-| 6.2 | `SmsNotificationConsumer` | ⏳ | — | Consumes `AppointmentBookedIntegrationEvent` |
-| 6.3 | Scriban email template engine | ⏳ | — | Tenant-aware white-label templates |
-| 6.4 | Dead Letter Queue (DLQ) handling | ⏳ | — | After 5 retries, move to DLQ |
-| 6.5 | Worker hosted service registration | ⏳ | — | `AddHostedService<NotificationWorkerService>()` |
+| 6.1 | `EmailNotificationConsumer` (MassTransit IConsumer) | ✅ | Antigravity · 2026-03-25 | Consumes `AppointmentBookedIntegrationEvent` |
+| 6.2 | `SmsNotificationConsumer` | ✅ | Antigravity · 2026-03-25 | Consumes `AppointmentBookedIntegrationEvent` |
+| 6.3 | Scriban email template engine | ✅ | Antigravity · 2026-03-25 | Tenant-aware white-label templates |
+| 6.4 | Dead Letter Queue (DLQ) handling | ✅ | Antigravity · 2026-03-25 | After 5 retries, move to DLQ |
+| 6.5 | Worker hosted service registration | ✅ | Antigravity · 2026-03-25 | `AddHostedService<NotificationWorkerService>()` |
 
 ---
 
